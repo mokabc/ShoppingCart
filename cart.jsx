@@ -169,14 +169,25 @@ const Products = (props) => {
     return newTotal;
   };
   // TODO: implement the restockProducts function
-  const restockProducts = (url) => {
-      doFetch(url);
-      let newItems = data.map((item) => {
-        let { name, country, cost, instock } = item;
-        return { name, country, cost, instock };
-      });
-      setItems([...items, ...newItems]);
-    };
+  const restockProducts = async (url) => {
+    try {
+      const response = await fetch(url);
+      const apiData = await response.json();
+      const newData = apiData.data.map((record) => record.attributes);
+      setItems(newData);
+    } catch (error) {
+      console.log(error);
+      return alert("Unable to restock. Check with your provider (server)");
+    }
+  };
+  //const restockProducts = (url) => {
+    //  doFetch(url);
+      //let newItems = data.map((item) => {
+        //let { name, country, cost, instock } = item;
+        //return { name, country, cost, instock };
+      //});
+      //setItems([...items, ...newItems]);
+    //};
 
   return (
     <Container>
